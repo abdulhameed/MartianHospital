@@ -1,0 +1,10 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %} REGISTRATION {% endblock %}
+
+{% block content %}
+  <h2>Sign up for a free account</h2>
+  <p class="lead">Select below the type of account you want to create</p>
+  <a href="{% url 'accounts:patient-register' %}" class="btn btn-student btn-lg" role="button">I'm a patient</a>
+  <a href="{% url 'accounts:staff-register' %}" class="btn btn-teacher btn-lg" role="button">I'm a Staff</a>
+{% endblock %}

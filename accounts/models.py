@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -39,10 +41,44 @@ class UserManager(BaseUserManager):
 
 #  Custom User model.
 class User(AbstractUser):
+    GENDER = 'G'
+    MALE = 'M'
+    FEMALE = 'F'
+
+    GENDER_CHOICES = [
+        (GENDER, 'Gender'),
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    ]
+
+    is_staff = models.BooleanField(default=False)
+    is_patient = models.BooleanField(default=False)
     username = None
     email = models.EmailField('email address', unique=True)
+    phone = models.CharField(max_length=16, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default=GENDER)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+
+#     create foreign keys to the User model importing the settings from django.conf import settings
+#     and referring to the settings.AUTH_USER_MODEL instead of referring directly to the custom User model.
+
+
+class Patient(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, primary_key=True)
+
+
+class DocProfile(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, null=True,
+                                 related_name='staff_profile')
+    state = models.CharField(max_length=30, default='Lagos')
+
+    def __str__(self):
+        return f'{self.user.email}'
+
+

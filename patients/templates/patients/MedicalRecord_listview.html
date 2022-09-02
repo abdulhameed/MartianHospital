@@ -1,0 +1,45 @@
+{% extends 'accounts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} MEDICAL RECORDS {% endblock %}
+
+{% block content %}
+
+<div class="row">
+                <form method="get">
+                    {{ filter.form|crispy }}
+                    <button class="btn btn-sm btn-danger" type="submit">Submit</button>
+                </form>
+            </div>
+
+  <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">State</th>
+      <th scope="col">Blood Type</th>
+      <th scope="col">Gluten Allergy</th>
+      <th scope="col">Peanut Allergy</th>
+      <th scope="col">Covid History</th>
+      <th scope="col">Ebola History</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for record in filter.qs %}
+    <tr>
+      <th scope="row">{{ record.patient.name }}</th>
+      <td>{{ record.state }}</td>
+      <td>{{ record.blood_type }}</td>
+      <td>{{ record.gluten_allergy }}</td>
+      <td>{{ record.peanut_allergy }}</td>
+      <td>{{ record.covid_history }}</td>
+      <td>{{ record.ebola_history }}</td>
+
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock %}

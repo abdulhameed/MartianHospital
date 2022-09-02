@@ -1,0 +1,37 @@
+{% extends 'accounts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Doctor List {% endblock %}
+
+{% block content %}
+
+<div class="row">
+                <form method="get">
+                    {{ filter.form|crispy }}
+                    <button class="btn btn-sm btn-danger" type="submit">Submit</button>
+                </form>
+            </div>
+
+  <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">State</th>
+
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for staff in staffs %}
+    <tr>
+      <th scope="row"><a href="{% url 'patients:doc-detail' DocProfile.id %}">{{ staff.first_name }} {{ staff.last_name }} </a></th>
+      <td>{{ staff.staff_profile.state }}</td>
+
+
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock %}

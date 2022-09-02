@@ -1,0 +1,17 @@
+{% extends 'accounts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} RECORD FORM {% endblock %}
+
+{% block content %}
+  <h1>Patient Record Form</h1>
+
+<form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Save</button>
+      </form>
+
+{% endblock %}

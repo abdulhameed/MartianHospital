@@ -50,7 +50,7 @@ class MedicalRecordCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateVie
         return self.request.user.is_patient and self.request.user.is_active
 
 
-class DocListView(ListView):
+class DocListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = DocProfile
     # queryset = User.objects.filter(is_staff=True)
     template_name = 'patients/staffList.html'
@@ -59,6 +59,9 @@ class DocListView(ListView):
     def get_queryset(self):
         User = get_user_model()
         return User.objects.all()
+
+    def test_func(self):
+        return self.request.user.is_patient and self.request.user.is_active
 
     # def get_context_data(self, **kwargs):
     #     context = super(StaffListView, self).get_context_data(**kwargs)

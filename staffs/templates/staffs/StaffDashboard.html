@@ -121,18 +121,16 @@
 					<th>State</th>
 					<th>Blood Type</th>
 					<th>Gluten allergy</th>
-					<th>Peanut allergy</th>
 					<th>Covid history</th>
 					<th>Ebola history</th>
 				</tr>
 
 				{% for patient in med_rec %}
 					<tr>
-						<td>{{patient.last_name}}</td>
+						<td>{{patient.patient.first_name}} {{patient.patient.last_name}}</td>
 						<td>{{patient.state}}</td>
 						<td>{{patient.blood_type}}</td>
 						<td>{{patient.gluten_allergy}}</td>
-						<td>{{patient.peanut_allergy}}</td>
 						<td>{{patient.covid_history}}</td>
 						<td>{{patient.ebola_history}}</td>
 

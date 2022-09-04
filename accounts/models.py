@@ -55,7 +55,7 @@ class User(AbstractUser):
     is_patient = models.BooleanField(default=False)
     username = None
     email = models.EmailField('email address', unique=True)
-    phone = models.CharField(max_length=16, blank=True, null=True)
+    phone = models.CharField(max_length=16, blank=True, null=True, unique=True)
     date_of_birth = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default=GENDER)
 

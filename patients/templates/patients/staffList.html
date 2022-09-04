@@ -17,16 +17,16 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col">Name</th>
-      <th scope="col">State</th>
+      <th scope="col">Appointment</th>
 
 
     </tr>
   </thead>
   <tbody>
-  {% for staff in staffs %}
+  {% for object in object_list %}
     <tr>
-      <th scope="row"><a href="{% url 'patients:doc-detail' DocProfile.id %}">{{ staff.first_name }} {{ staff.last_name }} </a></th>
-      <td>{{ staff.staff_profile.state }}</td>
+      <td scope="row"> {{ object.first_name }} {{ object.last_name }} </td>
+      <td><a href="{% url 'patients:Appointment-Create' object.id %}"> Book Appointment </a></td>
 
 
     </tr>

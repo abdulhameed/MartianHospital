@@ -12,9 +12,9 @@ from staffs.models import Appointment
 def dashboard(request):
     current_user = request.user
 
-    apm = Appointment.objects.filter(staff=current_user)[0:5]
-    apm1 = Appointment.objects.filter(staff=current_user).exclude(approved=True)
-    apm2 = apm1.filter(pending_approval=True)
+    apm = Appointment.objects.filter(doctor=current_user)[0:5]
+    apm1 = Appointment.objects.filter(doctor=current_user).exclude(approved=True)
+    apm2 = apm1.filter(pending_approval=True)[0:5]
 
     med_rec = MedicalRecord.objects.all
 
@@ -34,6 +34,8 @@ def dashboard(request):
     return render(request, 'staffs/StaffDashboard.html', context)
 
 
+@login_required
+@staff_required(redirect_field_name='owner:owner-dashboard')
 def accept_appointment(request, pk):
     appointment = Appointment.objects.get(pk=pk)
     appointment.approved = True
@@ -43,6 +45,8 @@ def accept_appointment(request, pk):
     return redirect('staffs:staff-dashboard')
 
 
+@login_required
+@staff_required(redirect_field_name='owner:owner-dashboard')
 def reject_appointment(request, pk):
     appointment = Appointment.objects.get(pk=pk)
     appointment.approved = False

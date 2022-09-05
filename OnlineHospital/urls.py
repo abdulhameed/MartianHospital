@@ -19,14 +19,14 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 
 import patients
-from patients.views import MedicalRecordListView, StatisticalChartView
+from patients.views import MedicalRecordListView
 
 urlpatterns = [
-    path('', StatisticalChartView.as_view(), name='home'),
+    path('', patients.views.patientsView, name='home'),
     path('1/', patients.views.patientsView, name='home1'),
     path('admin/', admin.site.urls),
     path('patient/', include('patients.urls')),
-    path('home/', MedicalRecordListView.as_view(), name='homepage'),
+    path('patients-list/', MedicalRecordListView.as_view(), name='patients-list'),
     path('staff/', include('staffs.urls')),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -37,5 +37,3 @@ urlpatterns = [
          name='booking-confirmed'),
 
 ]
-
-# patients/templates/patients/booking_confirmed.html

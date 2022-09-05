@@ -1,8 +1,12 @@
 from django.conf import settings
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, ListView
+
+from accounts.filters import DocProfileFilter
 from accounts.forms import StaffSignUpForm, PatientSignUpForm
+from accounts.models import DocProfile
 
 
 class SignUpView(TemplateView):
@@ -37,3 +41,17 @@ class StaffSignUpView(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('patients:record')
+
+
+class DoctorSearchListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = DocProfile
+    template_name = 'accounts/DoctorSearch_listview.html'
+    context_object_name = 'records'
+
+    def get_context_data(self, **kwargs):
+        context = super(DoctorSearchListView, self).get_context_data(**kwargs)
+        context['filter'] = DocProfileFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
+    def test_func(self):
+        return self.request.user.is_patient and self.request.user.is_active

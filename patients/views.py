@@ -17,7 +17,7 @@ from staffs.models import Appointment
 from django.contrib.auth import get_user_model
 
 
-class MedicalRecordListView(ListView):
+class MedicalRecordListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = MedicalRecord
 
     template_name = 'patients/MedicalRecord_listview.html'
@@ -27,6 +27,9 @@ class MedicalRecordListView(ListView):
         context = super(MedicalRecordListView, self).get_context_data(**kwargs)
         context['filter'] = MedicalRecordFilter(self.request.GET, queryset=self.get_queryset())
         return context
+
+    def test_func(self):
+        return self.request.user.is_staff and self.request.user.is_active
 
 
 class MedicalRecordCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -48,19 +51,6 @@ class MedicalRecordCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateVie
     def test_func(self):
         return self.request.user.is_patient and self.request.user.is_active
 
-
-class DocListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = DocProfile
-    # queryset = User.objects.filter(is_staff=True)
-    template_name = 'patients/staffList.html'
-    # context_object_name = 'staffs'
-
-    def get_queryset(self):
-        User = get_user_model()
-        return User.objects.all()
-
-    def test_func(self):
-        return self.request.user.is_patient and self.request.user.is_active
 
 
 class AppointmentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -95,35 +85,12 @@ class AppointmentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
     def get_success_url(self):
         return reverse('patients:doctor-search')
 
-
     # Ensuring that request.user is an active Patient
     def test_func(self):
         return self.request.user.is_patient and self.request.user.is_active
 
 
-class StatisticalChartView(TemplateView):
-    template_name = 'patients/homechart.html'
-    blood_type = ['GROUP_A', 'GROUP_B', 'GROUP_AB', 'GROUP_O']
-
-    medical_records = MedicalRecord.objects.all()
-
-    # grp = MedicalRecord.objects.filter(blood_type=blood_type)
-    # grp_count = grp.count()
-
-    # context['count'] = context['tasks'].count()
-    # context['your_qset'] = YourModel.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['gluten_allergy'] = MedicalRecord.objects.filter(gluten_allergy = True).count
-        context['peanut_allergy'] = MedicalRecord.objects.filter(peanut_allergy = True).count
-        context['covid_history'] = MedicalRecord.objects.filter(covid_history=True).count
-        context['ebola_history'] = MedicalRecord.objects.filter(ebola_history=True).count
-
-        return context
-
-
-############################################################################################################
+# View for Queryset to display Medical Records Charts
 def patientsView(request):
     gluten_allergy = MedicalRecord.objects.filter(gluten_allergy = True).count()
     gluten_allergy = int(gluten_allergy)
@@ -168,3 +135,4 @@ def patientsView(request):
                'blood_type':blood_type,
                'blood_type_count':blood_type_count}
     return render(request, 'patients/homechart1F.html', context)
+

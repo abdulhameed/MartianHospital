@@ -8,7 +8,7 @@ from staffs.models import Appointment
 
 
 @login_required
-@staff_required(redirect_field_name='owner:owner-dashboard')
+@staff_required(redirect_field_name='home')
 def dashboard(request):
     current_user = request.user
 
@@ -35,7 +35,7 @@ def dashboard(request):
 
 
 @login_required
-@staff_required(redirect_field_name='owner:owner-dashboard')
+@staff_required(redirect_field_name='home')
 def accept_appointment(request, pk):
     appointment = Appointment.objects.get(pk=pk)
     appointment.approved = True
@@ -46,7 +46,7 @@ def accept_appointment(request, pk):
 
 
 @login_required
-@staff_required(redirect_field_name='owner:owner-dashboard')
+@staff_required(redirect_field_name='home')
 def reject_appointment(request, pk):
     appointment = Appointment.objects.get(pk=pk)
     appointment.approved = False

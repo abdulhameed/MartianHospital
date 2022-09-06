@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -12,23 +14,32 @@ from staffs.models import Appointment
 def dashboard(request):
     current_user = request.user
 
-    apm = Appointment.objects.filter(doctor=current_user)[0:5]
-    apm1 = Appointment.objects.filter(doctor=current_user).exclude(approved=True)
-    apm2 = apm1.filter(pending_approval=True)[0:5]
+    today = datetime.date.today()
+    current_month = today.strftime('%B')
+    apm = Appointment.objects.filter(doctor=current_user, pending_approval=True)
+    apm1 = Appointment.objects.filter(doctor=current_user, pending_approval=True).exclude(approved=True)[0:5]
+    # apm2 = apm1.filter(pending_approval=True)[0:5]
+
+    # import datetime
+    #     today = datetime.date.today()
+    #     MyModel.objects.filter(mydatefield__year=today.year,
+    #                             mydatefield__month=today.month)
+    #   strftime('%B')
 
     med_rec = MedicalRecord.objects.all
 
-    rejected = Appointment.objects.filter(approved=False)
+    rejected = Appointment.objects.filter(approved=False, aptTime__month=today.month, doctor=current_user)
     rejected_count = rejected.count()
 
-    accepted = Appointment.objects.filter(approved=True)
+    accepted = Appointment.objects.filter(approved=True, aptTime__month=today.month, doctor=current_user)
     accepted_count = accepted.count()
 
     context = {
-        'apm2': apm2,
+        'apm2': apm1,
         'accepted_count': accepted_count,
         'rejected_count': rejected_count,
         'med_rec': med_rec,
+        'current_month': current_month
     }
 
     return render(request, 'staffs/StaffDashboard.html', context)

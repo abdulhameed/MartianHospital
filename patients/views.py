@@ -93,19 +93,19 @@ class AppointmentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
 # View for Queryset to display Medical Records Charts
 def patientsView(request):
     gluten_allergy = MedicalRecord.objects.filter(gluten_allergy = True).count()
-    gluten_allergy = int(gluten_allergy)
+    # gluten_allergy = int(gluten_allergy)
     print('Number of Gluten Allergy patients Are',gluten_allergy)
 
     peanut_allergy = MedicalRecord.objects.filter(peanut_allergy = True).count()
-    peanut_allergy = int(peanut_allergy)
+    # peanut_allergy = int(peanut_allergy)
     print('Number of Peanut Allergy patients Are',peanut_allergy)
 
     covid_history = MedicalRecord.objects.filter(covid_history=True).count()
-    covid_history = int(covid_history)
+    # covid_history = int(covid_history)
     print('Number of Covid History patients Are',covid_history)
 
     ebola_history = MedicalRecord.objects.filter(ebola_history=True).count()
-    ebola_history = int(ebola_history)
+    # ebola_history = int(ebola_history)
     print('Number of Ebola History patients Are',ebola_history)
 
     GROUP_A = MedicalRecord.objects.filter(blood_type='A').count()
@@ -127,6 +127,9 @@ def patientsView(request):
 
     blood_type = ['GROUP_A', 'GROUP_B', 'GROUP_AB', 'GROUP_O']
     blood_type_count = [GROUP_A, GROUP_B, GROUP_AB, GROUP_O]
+    print('<<<<<<<<<<<>>>>>>>>>>>>')
+    print('List of Blood types are:', blood_type)
+    print('List of Blood count are:', blood_type_count)
 
     condition_list = ['Gluten Allergy', 'Peanut Allergy', 'Covid History', 'Ebola History']
     condition_list_count = [gluten_allergy, peanut_allergy, covid_history, ebola_history]

@@ -13,6 +13,6 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='staff',
                                on_delete=models.SET_NULL, null=True)
     patient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+', on_delete=models.SET_NULL, null=True)
-    aptTime = models.DateTimeField(blank=True, null=True)
+    aptTime = models.DateTimeField(blank=True, null=True, verbose_name = "Appointment Date and Time")
     pending_approval = models.BooleanField(default=True, null=True)
     approved = models.BooleanField(default=False, null=True)

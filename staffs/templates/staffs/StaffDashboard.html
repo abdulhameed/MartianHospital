@@ -47,7 +47,7 @@
 		<div class="col-md">
 			<div class="card text-center text-white" id="orders-delivered">
 			  	<div class="card-header">
-			  		<h5 class="card-title"> Accepted</h5>
+			  		<h5 class="card-title"> Accepted for {{ current_month }}</h5>
 			  	</div>
 			  	<div class="card-body">
 			    	<h3 class="card-title">{{ accepted_count }}</h3>
@@ -60,7 +60,7 @@
 		<div class="col-md">
 			<div class="card text-center text-white  mb-3" id="orders-pending">
 			  	<div class="card-header">
-			  		<h5 class="card-title"> Rejected</h5>
+			  		<h5 class="card-title"> Rejected for {{ current_month }}</h5>
 			  	</div>
 			  	<div class="card-body">
 			    	<h3 class="card-title">{{ rejected_count }}</h3>
